@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "ipython-memory-magics"
+version = "0.3.7"
+description = "IPython magic commands for tracking memory usage"
+
+license = "MIT"
+
+authors = [
+    "Ruslan Mukhametshin <rusmux21@gmail.com>"
+]
+
+homepage = "https://github.com/rusmux/ipython-memory-magics"
+
+keywords = ["memory", "profiler", "jupyter", "magic"]
+
+readme = "README.md"
+packages = [{include = "memory_magics"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+psutil = "^5.9.3"
+ipython = "^8.5.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+isort = "^5.10.1"
+pylint = "^2.15.5"
+notebook = "^6.5.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
