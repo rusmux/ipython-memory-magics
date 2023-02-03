@@ -1,0 +1,65 @@
+repos:
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: pretty-format-json
+
+      - id: check-yaml
+      - id: check-toml
+      - id: check-docstring-first
+      - id: check-case-conflict
+      - id: check-added-large-files
+        args: [ '--maxkb=5120' ]
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.3.1
+    hooks:
+      - id: pyupgrade
+        name: Upgrade code
+        args: [ --py38-plus ]
+
+  - repo: https://github.com/psf/black
+    rev: 22.12.0
+    hooks:
+      - id: black
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.11.5
+    hooks:
+      - id: isort
+
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.16
+    hooks:
+      - id: mdformat
+        name: MD formatting
+        additional_dependencies:
+          - mdformat-gfm
+          - mdformat-black
+
+  - repo: local
+    hooks:
+
+      - id: update-requirements
+        name: Update requirements
+        entry: poetry export -f requirements.txt -o requirements.txt --with=dev --without-hashes
+        language: system
+        files: pyproject.toml|poetry.lock
+        pass_filenames: false
+
+      - id: flake8
+        name: wemake-python-styleguide
+        entry: flake8
+        language: system
+        types: [ python ]
+
+      - id: pytest
+        name: Tests
+        entry: pytest
+        language: system
+        types: [ python ]
+        pass_filenames: false
+        stages: [ push ]

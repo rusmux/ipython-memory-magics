@@ -1,85 +1,26 @@
-"""Utility functions."""
-
-from __future__ import annotations
-
-import os
-
-import psutil
+"""Print utility functions."""
+from typing import Optional
 
 
-def format_bytes(n: int) -> str:
-    """Format an integer number of bytes into a string"""
+def format_bytes(n_bytes: int) -> str:
+    """Format an integer number of bytes into a string."""
 
     for unit in ["B", "KiB", "MiB", "GiB"]:
-        if not n // 1024:
-            return f"{round(n, 2)} {unit}"
-        n /= 1024
-
-
-def get_last_line(file_path: str, skip_empty: bool = False) -> str:
-    """Get the last line of a file"""
-
-    with open(file_path, "rb") as file:
-        try:
-            file.seek(-1, os.SEEK_END)
-            while True:
-                if file.read(1) == b"\n":
-                    if file.read(1) or not skip_empty:
-                        file.seek(-1, os.SEEK_CUR)
-                        break
-                    file.seek(-1, os.SEEK_CUR)
-                file.seek(-2, os.SEEK_CUR)
-        # one-line case
-        except OSError:
-            file.seek(0)
-
-        last_line = file.read().strip(b"\n").decode()
-        return last_line
-
-
-def get_jupyter_pids() -> list[int]:
-    """Get Jupyter processes ids"""
-
-    jupyter_pids = []
-
-    pids = psutil.pids()
-    for pid in pids:
-        try:
-            process = psutil.Process(pid)
-            cmdline = " ".join(process.cmdline()).lower()
-            if "jupyter" in cmdline:
-                jupyter_pids.append(pid)
-        except (psutil.NoSuchProcess, psutil.AccessDenied):
-            continue
-
-    return jupyter_pids
-
-
-def get_jupyter_memory_usage() -> list[int]:
-    """Get the total current memory used by Jupyter"""
-
-    jupyter_memory_usages = []
-
-    jupyter_pids = get_jupyter_pids()
-    for pid in jupyter_pids:
-        process = psutil.Process(pid)
-        jupyter_memory_usages.append(process.memory_info().rss)
-
-    jupyter_memory_usage = sum(jupyter_memory_usages)
-    return jupyter_memory_usage
+        if not n_bytes // 1024:
+            return f"{round(n_bytes, 2)} {unit}"  # noqa: WPS237
+        n_bytes /= 1024
 
 
 def print_memory_usage_info(
     memory_current: int,
     memory_peak: int,
-    memory_notebook: int | None,
-    memory_notebook_peak: int | None,
-    memory_jupyter: int | None,
-    memory_jupyter_peak: int | None,
-    expr_type: str | None = None,
+    memory_notebook: Optional[int],
+    memory_notebook_peak: Optional[int],
+    memory_jupyter: Optional[int],
+    memory_jupyter_peak: Optional[int],
+    expr_type: Optional[str] = None,
     print_table: bool = False,
 ) -> None:
-
     dash = "     --    "
 
     memory_current = format_bytes(memory_current) if memory_current is not None else None

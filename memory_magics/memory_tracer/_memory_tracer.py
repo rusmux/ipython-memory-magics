@@ -34,8 +34,7 @@ def parse_args() -> argparse.Namespace:
         help="Interval in milliseconds for checking memory usage",
     )
 
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
 
 
 def trace_peak_memory_usage(
@@ -52,25 +51,26 @@ def trace_peak_memory_usage(
 
     line_count = 0
     while True:
-        for i, process in enumerate(processes):
+        for i, process in enumerate(processes):  # noqa: WPS111
             memory_usages_current[i] = process.memory_info().rss
         total_current = sum(memory_usages_current)
 
         memory_usages_peak = list(map(max, memory_usages_current, memory_usages_peak))  # type: ignore
         total_peak = max(total_current, total_peak)
+        memory_usage = " ".join(map(str, memory_usages_peak)) + " " + str(total_peak) + "\n"
 
-        file = open(output, "a", encoding="utf-8")
-        file.write(" ".join(map(str, memory_usages_peak)) + " " + str(total_peak) + "\n")
+        memory_peaks_file = open(output, "a", encoding="utf-8")
+        memory_peaks_file.write(memory_usage)
 
-        # clear the file so it doesn't get infinitely large
+        # clear the file, so it doesn't get infinitely large
         if line_count > 1000:
-            lines = file.readlines()[-10:]
-            file.truncate()
-            file.seek(0)
-            file.writelines(lines)
+            lines = memory_peaks_file.readlines()[-10:]
+            memory_peaks_file.truncate()
+            memory_peaks_file.seek(0)
+            memory_peaks_file.writelines(lines)
             line_count = 0
 
-        file.close()
+        memory_peaks_file.close()
 
         line_count += 1
         sleep(interval / 1000)

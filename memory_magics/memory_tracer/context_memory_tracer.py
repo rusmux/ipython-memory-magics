@@ -1,16 +1,15 @@
-"""Implementation of a memory tracer as a context manager."""
+"""Context manager for a memory tracer."""
 
 from __future__ import annotations
 
 import os
 import subprocess
-
 from tempfile import mkstemp
 from time import sleep
 from typing import Iterable
 
-from ..utils import get_last_line
-from . import _memory_tracer
+from memory_magics.memory_tracer import _memory_tracer
+from memory_magics.utils.jupyter import get_last_line
 
 
 class ContextMemoryTracer:
@@ -28,18 +27,25 @@ class ContextMemoryTracer:
         self._process: subprocess.Popen | None = None
 
     def __enter__(self) -> None:
-        self._file_handle, self._file_path = mkstemp()
+        file_handle, file_path = mkstemp()
+
+        self._file_handle = file_handle
+        self._file_path = file_path
 
         cmdline = [
             "python",
             _memory_tracer.__file__,
             *map(str, self.pids),
-            self._file_path,
+            file_path,
             "--interval",
             str(self.interval),
         ]
 
-        self._process = subprocess.Popen(cmdline, stdout=subprocess.PIPE, stderr=subprocess.PIPE, )
+        self._process = subprocess.Popen(
+            cmdline,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
         sleep(0.1)  # for script to load
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
