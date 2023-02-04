@@ -1,9 +1,11 @@
 # IPython memory magic commands
 
 [![PyPI](https://img.shields.io/pypi/v/ipython-memory-magics?color=brightgreen)](https://pypi.org/project/ipython-memory-magics/)
+[![codecov](https://codecov.io/gh/rusmux/ipython-memory-magics/branch/main/graph/badge.svg?token=HSOSLG5B19)](https://codecov.io/gh/rusmux/ipython-memory-magics)
 
 [![wemake-python-styleguide](https://img.shields.io/badge/style-wemake-000000.svg)](https://wemake-python-styleguide.readthedocs.io/en/latest/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/rusmux/ipython-memory-magics/main.svg)](https://results.pre-commit.ci/latest/github/rusmux/ipython-memory-magics/main)
 
 Simple tool to trace memory usage of a Python statement or expression execution.
 
@@ -26,7 +28,7 @@ Install from pip:
 pip install ipython-memory-magics
 ```
 
-Or install directly from github:
+Or install directly from GitHub:
 
 ```
 pip install git+https://github.com/rusmux/ipython-memory-magics.git
@@ -54,7 +56,7 @@ If the file does not already exist, run `ipython profile create` in a terminal.
 Use `%memory [options] statement` to measure `statement`'s memory consumption:
 
 ```python
-% memory - q
+%memory -q
 list(range(10 ** 6))
 ```
 
@@ -69,7 +71,7 @@ jupyter memory usage, or to print the statistics in a table. For example, you ca
 the information about the notebook current memory consumption:
 
 ```python
-% memory - n
+%memory -n
 ```
 
 ```
@@ -81,7 +83,7 @@ In the same way, `-j` or `--jupyter` flag will give you the information about th
 Put `%%memory [options]` on top of a cell to measure its memory consumption:
 
 ```python
-In[1]: % % memory - n - j - t
+In[1]: %%memory -n -j -t
 sum(list(range(10 ** 6)))
 ```
 
