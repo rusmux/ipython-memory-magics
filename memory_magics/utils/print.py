@@ -31,7 +31,6 @@ def print_memory_usage_info(
     memory_jupyter_peak = format_bytes(memory_jupyter_peak) if memory_jupyter_peak is not None else dash
 
     if print_table:
-
         if any([memory_current is not None, memory_notebook is not None, memory_jupyter is not None]):
             print("RAM usage |   current   |     peak     |")
             print("----------------------------------------")
@@ -43,9 +42,7 @@ def print_memory_usage_info(
             print(f" jupyter  | {memory_jupyter:11} | {memory_jupyter_peak:11}  |")
 
     else:
-
         if expr_type is not None:
-
             if memory_notebook:
                 print(f"RAM usage: {expr_type}:     {memory_current:11} / {memory_peak:11}")
                 print(f"           notebook: {memory_notebook:11} / {memory_notebook_peak:11}")
@@ -58,7 +55,6 @@ def print_memory_usage_info(
                 print(f"RAM usage: {expr_type}: {memory_current} / {memory_peak}")
 
         else:
-
             if memory_notebook:
                 print(f"RAM usage: notebook: {memory_notebook}")
                 if memory_jupyter:
