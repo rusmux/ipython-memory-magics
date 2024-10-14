@@ -1,7 +1,7 @@
 repos:
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -15,24 +15,24 @@ repos:
         args: [ '--maxkb=5120' ]
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.3.1
+    rev: v3.18.0
     hooks:
       - id: pyupgrade
         name: Upgrade code
         args: [ --py38-plus ]
 
   - repo: https://github.com/psf/black
-    rev: 23.1.0
+    rev: 24.10.0
     hooks:
       - id: black
 
   - repo: https://github.com/pycqa/isort
-    rev: 5.12.0
+    rev: 5.13.2
     hooks:
       - id: isort
 
   - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.16
+    rev: 0.7.18
     hooks:
       - id: mdformat
         name: MD formatting
@@ -62,7 +62,7 @@ repos:
         language: system
         types: [ python ]
         pass_filenames: false
-        stages: [ push ]
+        stages: [ pre-push ]
 
 ci:
   autofix_commit_msg: |

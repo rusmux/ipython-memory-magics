@@ -1,4 +1,5 @@
 """Print utility functions."""
+
 from typing import Optional
 
 
